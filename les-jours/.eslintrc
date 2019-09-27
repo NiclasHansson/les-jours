@@ -1,0 +1,39 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "react",
+    "react-native",
+    "prettier"
+  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  "rules": {
+    "max-len": ["error", { code: 120 }],
+    "no-undef": 2,
+    "prettier/prettier": "error",
+    "react/display-name": 0,
+    "react/jsx-no-bind": [2, { "allowArrowFunctions": true }],
+    "react/jsx-no-duplicate-props": 2,
+    "react/jsx-uses-vars": 2,
+    "react/no-did-mount-set-state": 2,
+    "react/no-direct-mutation-state": 2,
+    "react/prop-types": 1,
+    "semi": 2
+  },
+  "settings": {
+    "react": {
+        "version": "16.8"
+    }
+  },
+  "globals": {
+    "GLOBAL": false,
+    "it": false,
+    "expect": false,
+    "describe": false,
+    "require": false,
+    "Promise": false,
+    "module": false
+   }
+}
