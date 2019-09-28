@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import Colors from '../../constants/Colors';
-import FloorPicker from './FloorPicker';
-import Map from './Map';
-import RoomPicker from './RoomPicker';
-import Rooms from './data';
-import Menu from './Menu';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {

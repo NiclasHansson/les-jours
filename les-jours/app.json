@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Marauders Map",
-    "slug": "marauders-map",
+    "name": "Les Jours",
+    "slug": "les-jours",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
@@ -11,9 +11,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/whiteboard.png",
     "splash": {
-      "image": "./assets/images/robot-prod.png",
+      "image": "./assets/images/whiteboard.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

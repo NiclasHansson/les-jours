@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import Colors from '../constants/Colors';
-import FloorPlan from '../components/floorPlan/FloorPlan';
+import Dresser from '../components/dresser/Dresser';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,7 +18,7 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <FloorPlan />
+                <Dresser />
             </ScrollView>
         </View>
     );
