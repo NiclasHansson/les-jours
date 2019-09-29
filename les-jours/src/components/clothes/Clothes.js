@@ -3,22 +3,20 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import CategoryCard from './CategoryCard';
-import Header from './Header';
+import Header from '../Header';
 
 const fadeHeight = 60;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    header: {
-        marginBottom: 24,
-    },
     categoryContainer: {
         position: 'relative',
         flex: 1,
     },
     categoryScroll: {
-        paddingVertical: 24,
+        paddingTop: 24,
+        marginBottom: 24,
     },
     fade: {
         width: '100%',
@@ -40,21 +38,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const clothes = {
-    jackets: [{ name: 'Military Ralph Lauren' }, { name: 'Navy jacket' }],
-    overShirts: [{ name: 'Grey Gant' }, { name: 'Red Gant' }],
-    pants: [
-        { name: 'Navy Dr. Denim' },
-        { name: 'Navy Flannell' },
-        { name: 'Navy Dr. Denim 2' },
-        { name: 'Navy Flannell 2' },
-        { name: 'Navy Dr. Denim 3' },
-        { name: 'Navy Flannell 3' },
-    ],
-    shirts: [{ name: 'Blue Ralph Lauren' }, { name: 'White Ralph Lauren' }],
-    shoes: [{ name: 'Brown leather boots' }, { name: 'Brown chukka boots' }, { name: 'Brown mocka oxfords' }],
-};
-
 const convertHeading = heading => {
     let formattedHeading = [...heading].map((char, index) => {
         if (index === 0) return char.toUpperCase();
@@ -66,12 +49,10 @@ const convertHeading = heading => {
     return formattedHeading.join().replace(/,/g, '');
 };
 
-export const Dresser = () => {
+export const Clothes = ({ clothes }) => {
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Header />
-            </View>
+            <Header />
             <View style={styles.categoryContainer}>
                 <LinearGradient
                     style={{ ...styles.fade, ...styles.fadeUpper }}
@@ -95,4 +76,4 @@ export const Dresser = () => {
     );
 };
 
-export default Dresser;
+export default Clothes;

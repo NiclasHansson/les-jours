@@ -1,5 +1,5 @@
 # les-jours
-For those days when you're not sure what to wear!
+For those cloudy days when you don't know what you ought to put on...
 
 # Getting started
 1. run ```npm i yarn -g```

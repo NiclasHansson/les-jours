@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import Colors from '../constants/Colors';
-import Generator from '../components/generator/Generator';
+import Clothes from '../components/clothes/Clothes';
+import clothes from '../data/clothes';
 
 const styles = StyleSheet.create({
     container: {
@@ -14,14 +15,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default function HomeScreen() {
+export default function ClothesScreen() {
     return (
         <View style={styles.container}>
-            <Generator />
+            <Clothes clothes={clothes} />
         </View>
     );
 }
 
-HomeScreen.navigationOptions = {
+ClothesScreen.navigationOptions = {
     header: null,
 };
