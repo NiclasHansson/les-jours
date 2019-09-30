@@ -10,7 +10,7 @@
   ],
   "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
   "rules": {
-    "max-len": ["error", { code: 120 }],
+    "max-len": ["error", { code: 120, "ignoreTemplateLiterals": true  }],
     "no-undef": 2,
     "prettier/prettier": "error",
     "react/display-name": 0,
@@ -20,7 +20,7 @@
     "react/no-did-mount-set-state": 2,
     "react/no-direct-mutation-state": 2,
     "react/prop-types": 1,
-    "semi": 2
+    "semi": 2,
   },
   "settings": {
     "react": {

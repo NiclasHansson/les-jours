@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 
 import Colors from '../constants/Colors';
 import Clothes from '../components/clothes/Clothes';
-import clothes from '../data/clothes';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
 export default function ClothesScreen() {
     return (
         <View style={styles.container}>
-            <Clothes clothes={clothes} />
+            <Clothes />
         </View>
     );
 }

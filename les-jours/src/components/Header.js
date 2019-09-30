@@ -6,6 +6,7 @@ import Colors from '../constants/Colors';
 const styles = StyleSheet.create({
     container: {
         height: 180,
+        width: '100%',
         backgroundColor: Colors.LJ_LJ_1,
         paddingTop: 70,
         alignItems: 'center',

@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import CategoryCard from './CategoryCard';
 import Header from '../Header';
+import { clothes } from '../../data/clothes';
 
 const fadeHeight = 60;
 const styles = StyleSheet.create({
@@ -49,7 +50,7 @@ const convertHeading = heading => {
     return formattedHeading.join().replace(/,/g, '');
 };
 
-export const Clothes = ({ clothes }) => {
+export const Clothes = () => {
     return (
         <View style={styles.container}>
             <Header />
