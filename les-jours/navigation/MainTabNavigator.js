@@ -4,6 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from './TabBarIcon';
 import HomeScreen from '../src/screens/HomeScreen';
+import OutfitsScreen from '../src/screens/OutfitsScreen';
 import ClothesScreen from '../src/screens/ClothesScreen';
 
 const config = Platform.select({
@@ -24,6 +25,19 @@ HomeStack.navigationOptions = {
 };
 HomeStack.path = '';
 
+/* OUTFITS STACK */
+const OutfitsStack = createStackNavigator(
+    {
+        Home: OutfitsScreen,
+    },
+    config
+);
+OutfitsStack.navigationOptions = {
+    tabBarLabel: 'Outfits',
+    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-information-circle" />,
+};
+OutfitsStack.path = '';
+
 /* CLOTHES STACK */
 const ClothesStack = createStackNavigator(
     {
@@ -39,6 +53,7 @@ ClothesStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
     HomeStack,
+    OutfitsStack,
     ClothesStack,
 });
 

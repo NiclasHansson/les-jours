@@ -38,7 +38,11 @@ const styles = StyleSheet.create({
         marginTop: 1,
     },
     itemsContainer: {
-        padding: 16,
+        paddingHorizontal: 16,
+    },
+    item: {
+        height: 44,
+        justifyContent: 'center',
     },
     itemText: {
         fontSize: 18,
@@ -57,7 +61,7 @@ export const CategoryCard = ({ items = [], name, onAddPress, onItemPress }) => {
             </View>
             <View style={styles.itemsContainer}>
                 {items.map(item => (
-                    <TouchableOpacity key={item.name} onPress={() => onItemPress(item)}>
+                    <TouchableOpacity style={styles.item} key={item.name} onPress={() => onItemPress(item)}>
                         <Text style={styles.itemText}>{item.name}</Text>
                     </TouchableOpacity>
                 ))}

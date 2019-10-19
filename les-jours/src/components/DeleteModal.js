@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Colors from '../../constants/Colors';
-import DbContext from '../../../DbContext';
+import Colors from '../constants/Colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,23 +59,16 @@ const styles = StyleSheet.create({
     },
 });
 
-export const DeleteModal = ({ category, id, name, onClose }) => {
-    const database = useContext(DbContext);
-
-    const onDeleteItem = () => {
-        database.deleteItem({ id });
-        onClose();
-    };
-
+export const DeleteModal = ({ label, helpText, onClose, onDelete }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>{`${category}: ${name}`}</Text>
+            <Text style={styles.heading}>{`${label}: ${helpText}`}</Text>
             <View style={styles.buttonRow}>
                 <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
                     <Text style={styles.cancelText}>Cancel</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.deleteButton} onPress={onDeleteItem}>
-                    <Text style={styles.deleteText}>{`Delete ${category}`}</Text>
+                <TouchableOpacity style={styles.deleteButton} onPress={onDelete}>
+                    <Text style={styles.deleteText}>Delete</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -84,10 +76,10 @@ export const DeleteModal = ({ category, id, name, onClose }) => {
 };
 
 DeleteModal.propTypes = {
-    category: PropTypes.string,
-    id: PropTypes.number,
-    name: PropTypes.string,
+    label: PropTypes.string,
+    helpText: PropTypes.string,
     onClose: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 export default DeleteModal;

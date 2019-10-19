@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import PropTypes from 'prop-types';
 
+import DbContext from '../../../DbContext';
 import Colors from '../../constants/Colors';
 import star from '../../../assets/images/star.png';
 import starEmpty from '../../../assets/images/starEmpty.png';
@@ -25,39 +27,61 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
     },
+    rateButton: {
+        width: '100%',
+        justifyContent: 'center',
+        backgroundColor: Colors.LJ_White,
+        height: 50,
+        borderRadius: 8,
+        borderColor: Colors.LJ_LJ_1,
+        borderWidth: 1,
+    },
 });
 
-export const RatingPicker = (initialRating = 5, onChange, text) => {
-    const [rating, setRating] = useState(initialRating);
+export const RatingPicker = ({ outfitId }) => {
+    const [rating, setRating] = useState(0);
+    const database = React.useContext(DbContext);
 
     const onRatingChange = pressedRating => {
         const newRating = pressedRating === rating ? 0 : pressedRating;
         setRating(newRating);
-        onChange(newRating);
+    };
+
+    const onSave = () => {
+        database.setOutfitRating(outfitId, rating);
     };
 
     return (
-        <View style={styles.ratings}>
-            {text && <Text style={styles.ratingsText}>{text}</Text>}
-            <View style={styles.starContainer}>
-                <TouchableOpacity onPress={() => onRatingChange(1)}>
-                    <Image style={styles.star} source={rating > 0 ? star : starEmpty} resizeMode="contain" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => onRatingChange(2)}>
-                    <Image style={styles.star} source={rating > 1 ? star : starEmpty} resizeMode="contain" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => onRatingChange(3)}>
-                    <Image style={styles.star} source={rating > 2 ? star : starEmpty} resizeMode="contain" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => onRatingChange(4)}>
-                    <Image style={styles.star} source={rating > 3 ? star : starEmpty} resizeMode="contain" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => onRatingChange(5)}>
-                    <Image style={styles.star} source={rating > 4 ? star : starEmpty} resizeMode="contain" />
-                </TouchableOpacity>
+        <>
+            <View style={styles.ratings}>
+                <Text style={styles.ratingsText}>Rate your outit</Text>
+                <View style={styles.starContainer}>
+                    <TouchableOpacity onPress={() => onRatingChange(1)}>
+                        <Image style={styles.star} source={rating > 0 ? star : starEmpty} resizeMode="contain" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => onRatingChange(2)}>
+                        <Image style={styles.star} source={rating > 1 ? star : starEmpty} resizeMode="contain" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => onRatingChange(3)}>
+                        <Image style={styles.star} source={rating > 2 ? star : starEmpty} resizeMode="contain" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => onRatingChange(4)}>
+                        <Image style={styles.star} source={rating > 3 ? star : starEmpty} resizeMode="contain" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => onRatingChange(5)}>
+                        <Image style={styles.star} source={rating > 4 ? star : starEmpty} resizeMode="contain" />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+            <View style={styles.rateButton}>
+                <Button color={Colors.LJ_LJ_1} title="Save rating" onPress={onSave} />
+            </View>
+        </>
     );
+};
+
+RatingPicker.propTypes = {
+    outfitId: PropTypes.string,
 };
 
 export default RatingPicker;

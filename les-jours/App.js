@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SQLite } from 'expo-sqlite';
 
 import AppNavigator from './navigation/AppNavigator';
+import Header from './src/components/Header';
 import { DbProvider } from './DbContext';
 
 const db = SQLite.openDatabase('ljdb');
@@ -38,7 +39,9 @@ const handleLoadingError = error => {
 
 class App extends React.Component {
     state = {
+        clothes: [],
         isLoadingComplete: false,
+        outfits: [],
     };
 
     componentDidMount() {
@@ -49,13 +52,14 @@ class App extends React.Component {
         });
         db.transaction(tx => {
             tx.executeSql(
-                'create table if not exists table_outfits (id integer primary key not null, jacket int, overshirt int, shirt int, pants int, shoes int, rating int, lastWorn date);'
+                'create table if not exists table_outfits_2 (id integer primary key not null, outfitId string, rating integer, lastRated string);'
             );
         });
     }
 
     handleFinishLoading = () => {
-        this.getClothes();
+        this.getAllClothes();
+        this.getAllOutfits();
         this.setState({
             isLoadingComplete: true,
         });
@@ -64,7 +68,7 @@ class App extends React.Component {
     addToClothesTable = ({ name, category }) => {
         db.transaction(tx => {
             tx.executeSql('INSERT INTO table_clothes (name, category) VALUES (?,?)', [name, category], () => {
-                this.getClothes();
+                this.getAllClothes();
             });
         });
     };
@@ -72,13 +76,20 @@ class App extends React.Component {
     deleteFromClothesTable = ({ id }) => {
         db.transaction(tx => {
             tx.executeSql('DELETE FROM table_clothes WHERE id=(?)', [id], () => {
-                this.getClothes();
+                this.getAllClothes();
             });
         });
     };
 
-    getClothes = () => {
-        // let clothes = [{ name: 'Should be overwritten', category: 'jackets' }];
+    deleteOutfit = ({ id }) => {
+        db.transaction(tx => {
+            tx.executeSql('DELETE FROM table_outfits_2 WHERE outfitId=(?)', [id], () => {
+                this.getAllOutfits();
+            });
+        });
+    };
+
+    getAllClothes = () => {
         db.transaction(tx => {
             tx.executeSql(`SELECT * FROM table_clothes;`, [], (_, { rows }) => {
                 this.setState({ clothes: rows._array });
@@ -86,8 +97,48 @@ class App extends React.Component {
         });
     };
 
+    getAllOutfits = () => {
+        db.transaction(tx => {
+            tx.executeSql(`SELECT * FROM table_outfits_2;`, [], (_, { rows }) => {
+                this.setState({ outfits: rows._array });
+            });
+        });
+    };
+
+    setOutfitRating = async (id, rating) => {
+        db.transaction(tx => {
+            tx.executeSql(`SELECT * FROM table_outfits_2 WHERE outfitId=(?)`, [id], (_, { rows }) => {
+                const outfit = rows._array[0];
+                if (outfit) {
+                    console.log('OUTFIT IS NOT NULL', outfit);
+                    const newRating = (rating + outfit.rating) / 2;
+                    db.transaction(tx => {
+                        tx.executeSql(
+                            'UPDATE table_outfits_2 SET rating=(?), lastRated=(?) WHERE outfitId=(?)',
+                            [newRating, new Date(), id],
+                            () => {
+                                this.getAllOutfits();
+                            }
+                        );
+                    });
+                } else {
+                    console.log('OUTFIT NULLLLLL');
+                    db.transaction(tx => {
+                        tx.executeSql(
+                            'INSERT INTO table_outfits_2 (outfitId, rating, lastRated) VALUES (?,?,?)',
+                            [id, rating, new Date()],
+                            () => {
+                                this.getAllOutfits();
+                            }
+                        );
+                    });
+                }
+            });
+        });
+    };
+
     render() {
-        const { clothes, isLoadingComplete } = this.state;
+        const { clothes, outfits, isLoadingComplete } = this.state;
         const { skipLoadingScreen } = this.props;
         return !isLoadingComplete && !skipLoadingScreen ? (
             <AppLoading
@@ -96,9 +147,19 @@ class App extends React.Component {
                 onFinish={() => this.handleFinishLoading()}
             />
         ) : (
-            <DbProvider value={{ addItem: this.addToClothesTable, clothes, deleteItem: this.deleteFromClothesTable }}>
+            <DbProvider
+                value={{
+                    addItem: this.addToClothesTable,
+                    clothes,
+                    deleteClothesItem: this.deleteFromClothesTable,
+                    deleteOutfit: this.deleteOutfit,
+                    outfits,
+                    setOutfitRating: this.setOutfitRating,
+                }}
+            >
                 <View style={styles.container}>
                     {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                    <Header />
                     <AppNavigator />
                 </View>
             </DbProvider>

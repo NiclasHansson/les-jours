@@ -6,10 +6,8 @@ import { getClothesList } from '../../utils/getClothes';
 import DbContext from '../../../DbContext';
 
 import AddModal from './AddModal';
-import DeleteModal from './DeleteModal';
+import DeleteModal from '../DeleteModal';
 import CategoryCard from './CategoryCard';
-import Header from '../Header';
-// import { clothes } from '../../data/clothes';
 
 const fadeHeight = 60;
 const styles = StyleSheet.create({
@@ -85,9 +83,13 @@ export const Clothes = () => {
     const database = React.useContext(DbContext);
     const clothes = getClothesList(database.clothes);
 
+    const onDeleteItem = () => {
+        setDeleteModal(null);
+        database.deleteClothesItem({ id: deleteModal.id });
+    };
+
     return (
         <View style={styles.container}>
-            <Header />
             <View style={styles.categoryContainer}>
                 <LinearGradient
                     style={{ ...styles.fade, ...styles.fadeUpper }}
@@ -121,10 +123,10 @@ export const Clothes = () => {
                 )}
                 {deleteModal && (
                     <DeleteModal
-                        category={categorySingular(deleteModal.category)}
-                        id={deleteModal.id}
-                        name={deleteModal.name}
+                        label={categorySingular(deleteModal.category)}
+                        helpText={deleteModal.name}
                         onClose={() => setDeleteModal(null)}
+                        onDelete={onDeleteItem}
                     />
                 )}
             </View>
