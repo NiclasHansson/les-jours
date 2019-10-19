@@ -1,12 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import { getClothesList } from '../../utils/getClothes';
+import DbContext from '../../../DbContext';
 
 import AddModal from './AddModal';
 import DeleteModal from './DeleteModal';
 import CategoryCard from './CategoryCard';
 import Header from '../Header';
-import DbContext from '../../../DbContext';
 // import { clothes } from '../../data/clothes';
 
 const fadeHeight = 60;
@@ -80,22 +82,9 @@ const categorySingular = category => {
 export const Clothes = () => {
     const [addModal, setAddModal] = useState(null);
     const [deleteModal, setDeleteModal] = useState(null);
-    const database = useContext(DbContext);
-    const clothes = database.clothes || [];
+    const database = React.useContext(DbContext);
+    const clothes = getClothesList(database.clothes);
 
-    const jackets = clothes.filter(item => item.category === 'jackets');
-    const overShirts = clothes.filter(item => item.category === 'overShirts');
-    const pants = clothes.filter(item => item.category === 'pants');
-    const shirts = clothes.filter(item => item.category === 'shirts');
-    const shoes = clothes.filter(item => item.category === 'shoes');
-    let formattedClothes = [
-        { category: 'jackets', items: jackets },
-        { category: 'overShirts', items: overShirts },
-        { category: 'pants', items: pants },
-        { category: 'shirts', items: shirts },
-        { category: 'shoes', items: shoes },
-    ];
-    console.log('2', clothes, jackets);
     return (
         <View style={styles.container}>
             <Header />
@@ -106,7 +95,7 @@ export const Clothes = () => {
                     pointerEvents={'none'}
                 />
                 <ScrollView style={styles.categoryScroll} showsVerticalScrollIndicator={false}>
-                    {formattedClothes.map(({ category, items }) => (
+                    {clothes.map(({ category, items }) => (
                         <View key={category} style={styles.categoryCard}>
                             <CategoryCard
                                 name={camelCaseToHumanReadable(category)}

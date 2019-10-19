@@ -62,55 +62,33 @@ class App extends React.Component {
     };
 
     addToClothesTable = ({ name, category }) => {
-        console.log('ADD TO TABLE', { name, category });
-        db.transaction(
-            tx => {
-                tx.executeSql(
-                    'INSERT INTO table_clothes (name, category) VALUES (?,?)',
-                    [name, category],
-                    (tx, res) => {
-                        console.log('ADD EXE SUCCESS', res);
-                        this.getClothes();
-                    }
-                );
-            },
-            (tx, res) => console.log('ADD T ERROR', res),
-            (tx, res) => console.log('ADD T SUCCESS', res)
-        );
+        db.transaction(tx => {
+            tx.executeSql('INSERT INTO table_clothes (name, category) VALUES (?,?)', [name, category], () => {
+                this.getClothes();
+            });
+        });
     };
 
     deleteFromClothesTable = ({ id }) => {
-        console.log('DELETE FROM TABLE', { id });
-        db.transaction(
-            tx => {
-                tx.executeSql('DELETE FROM table_clothes WHERE id=(?)', [id], (tx, res) => {
-                    console.log('DELETE EXE SUCCESS', res);
-                    this.getClothes();
-                });
-            },
-            (tx, res) => console.log('DELETE T ERROR', res),
-            (tx, res) => console.log('DELETE T SUCCESS', res)
-        );
+        db.transaction(tx => {
+            tx.executeSql('DELETE FROM table_clothes WHERE id=(?)', [id], () => {
+                this.getClothes();
+            });
+        });
     };
 
     getClothes = () => {
         // let clothes = [{ name: 'Should be overwritten', category: 'jackets' }];
-        db.transaction(
-            tx => {
-                tx.executeSql(`SELECT * FROM table_clothes;`, [], (_, { rows }) => {
-                    console.log('GET EXE SUCCESS', rows._array);
-                    this.setState({ clothes: rows._array });
-                });
-            },
-            (tx, res) => console.log('GET T ERROR', tx, res),
-            (tx, res) => console.log('GET T SUCCESS', tx, res)
-        );
+        db.transaction(tx => {
+            tx.executeSql(`SELECT * FROM table_clothes;`, [], (_, { rows }) => {
+                this.setState({ clothes: rows._array });
+            });
+        });
     };
 
     render() {
         const { clothes, isLoadingComplete } = this.state;
         const { skipLoadingScreen } = this.props;
-        console.log('Render', clothes);
         return !isLoadingComplete && !skipLoadingScreen ? (
             <AppLoading
                 startAsync={loadResourcesAsync}

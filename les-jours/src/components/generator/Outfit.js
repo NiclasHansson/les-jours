@@ -12,11 +12,26 @@ import shoes from '../../../assets/images/shoes.png';
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        flex: 1,
+        paddingHorizontal: 16,
+        justifyContent: 'center',
+    },
+    placeholderPrimaryText: {
+        color: Colors.LJ_Black,
+        fontSize: 26,
+        fontFamily: 'kelly-slab',
+        textAlign: 'center',
+    },
+    placeholderSecondaryText: {
+        color: Colors.LJ_Black,
+        fontSize: 18,
+        fontFamily: 'kelly-slab',
+        textAlign: 'center',
     },
     item: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: 8,
     },
     icon: {
         width: 40,
@@ -46,17 +61,26 @@ const getIcon = category => {
 };
 
 export const Outfit = ({ outfit }) => {
-    console.log(outfit);
     return (
         <View style={styles.container}>
-            {outfit &&
-                outfit.clothes &&
-                Object.entries(outfit.clothes).map(([category, item]) => (
-                    <View key={`${category}-${item.id}`} style={styles.item}>
-                        <Image style={styles.icon} source={getIcon(category)} resizeMode="contain" />
-                        <Text style={styles.itemText}>{item.name}</Text>
-                    </View>
-                ))}
+            {outfit ? (
+                outfit === {} ? (
+                    <Text style={styles.placeholderPrimaryText}>Load an outfit to display it here...</Text>
+                ) : (
+                    outfit.clothes &&
+                    Object.entries(outfit.clothes).map(([category, item]) => (
+                        <View key={`${category}-${item.id}`} style={styles.item}>
+                            <Image style={styles.icon} source={getIcon(category)} resizeMode="contain" />
+                            <Text style={styles.itemText}>{item.name}</Text>
+                        </View>
+                    ))
+                )
+            ) : (
+                <View>
+                    <Text style={styles.placeholderPrimaryText}>{'No rated outfits'}</Text>
+                    <Text style={styles.placeholderSecondaryText}>{'Generate a new outfit to get started.'}</Text>
+                </View>
+            )}
         </View>
     );
 };

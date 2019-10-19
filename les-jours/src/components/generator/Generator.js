@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
+
+import { getClothes } from '../../utils/getClothes';
+import DbContext from '../../../DbContext';
 
 import Colors from '../../constants/Colors';
 import Header from '../Header';
 import Outfit from './Outfit';
-import { clothes, outfits } from '../../data/clothes';
-import star from '../../../assets/images/star.png';
-import starEmpty from '../../../assets/images/starEmpty.png';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,25 +17,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         padding: 16,
-    },
-    ratings: {
-        alignItems: 'center',
-    },
-    ratingsText: {
-        color: Colors.LJ_Black,
-        fontSize: 16,
-        fontFamily: 'kelly-slab',
-        marginBottom: 8,
-    },
-    starContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 50,
-        width: 300,
-    },
-    star: {
-        height: 30,
-        width: 30,
     },
     buttonRow: {
         flexDirection: 'row',
@@ -53,20 +34,20 @@ const styles = StyleSheet.create({
     },
 });
 
-const generateOutfit = minRating => {
+const generateOutfit = (minRating, outfits, clothes) => {
     if (minRating > 0) {
-        return randomizeRatedOutfit(minRating);
+        return randomizeRatedOutfit(minRating, outfits);
     }
-    return generateNewOutfit(1);
+    return generateNewOutfit(0, outfits, clothes);
 };
 
-const randomizeRatedOutfit = minRating => {
+const randomizeRatedOutfit = (minRating, outfits) => {
     const ratedOutfits = outfits.sort(outfit => outfit.data.rating >= minRating);
     return ratedOutfits[Math.floor(ratedOutfits.length * Math.random())];
 };
 
-const generateNewOutfit = retry => {
-    const { jackets, overShirts, pants, shirts, shoes } = clothes;
+const generateNewOutfit = (retry, outfits, clothes) => {
+    const { jackets, overShirts, pants, shirts, shoes } = getClothes(clothes);
     if (retry > jackets.length * overShirts.length * pants.length * shirts.length * shoes.length) {
         return {};
     }
@@ -87,14 +68,17 @@ const generateNewOutfit = retry => {
         },
     };
     if (outfits.some(outfit => outfit && outfit.id === newOutfit.id)) {
-        return generateOutfit(retry++);
+        return generateOutfit(retry++, outfits, clothes);
     }
     return newOutfit;
 };
 
 export const Generator = () => {
     const [outfit, setOutfit] = useState({});
-    const [minRating, setMinRating] = useState(5);
+
+    const database = React.useContext(DbContext);
+    const outfits = database.outfits || [];
+    const clothes = database.clothes || [];
 
     return (
         <View style={styles.container}>
@@ -102,32 +86,13 @@ export const Generator = () => {
             <View style={styles.outfit}>
                 <Outfit outfit={outfit} />
             </View>
-            <View style={styles.ratings}>
-                <Text style={styles.ratingsText}>min. rating requirement</Text>
-                <View style={styles.starContainer}>
-                    <TouchableOpacity onPress={() => (minRating === 1 ? setMinRating(0) : setMinRating(1))}>
-                        <Image style={styles.star} source={minRating > 0 ? star : starEmpty} resizeMode="contain" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => (minRating === 2 ? setMinRating(0) : setMinRating(2))}>
-                        <Image style={styles.star} source={minRating > 1 ? star : starEmpty} resizeMode="contain" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => (minRating === 3 ? setMinRating(0) : setMinRating(3))}>
-                        <Image style={styles.star} source={minRating > 2 ? star : starEmpty} resizeMode="contain" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => (minRating === 4 ? setMinRating(0) : setMinRating(4))}>
-                        <Image style={styles.star} source={minRating > 3 ? star : starEmpty} resizeMode="contain" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => (minRating === 5 ? setMinRating(0) : setMinRating(5))}>
-                        <Image style={styles.star} source={minRating > 4 ? star : starEmpty} resizeMode="contain" />
-                    </TouchableOpacity>
-                </View>
-            </View>
+
             <View style={styles.buttonRow}>
                 <View style={styles.button}>
                     <Button
                         color={Colors.LJ_White}
                         title="What should I wear?"
-                        onPress={() => setOutfit(generateOutfit(minRating))}
+                        onPress={() => setOutfit(generateOutfit(0, outfits, clothes))}
                     />
                 </View>
             </View>
