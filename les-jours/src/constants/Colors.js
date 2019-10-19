@@ -6,4 +6,5 @@ export default {
     LJ_GREY_2: '#aaa',
     LJ_Black: '#000',
     LJ_White: '#fff',
+    LJ_Red: 'red',
 };
