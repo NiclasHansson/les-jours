@@ -98,8 +98,10 @@ class App extends React.Component {
     };
 
     getAllOutfits = () => {
+        console.log('GET ALLLLLLLL');
         db.transaction(tx => {
             tx.executeSql(`SELECT * FROM table_outfits_2;`, [], (_, { rows }) => {
+                console.log('SUCCESS');
                 this.setState({ outfits: rows._array });
             });
         });
@@ -139,6 +141,7 @@ class App extends React.Component {
 
     render() {
         const { clothes, outfits, isLoadingComplete } = this.state;
+        console.log('RENDER', clothes.length, outfits.length);
         const { skipLoadingScreen } = this.props;
         return !isLoadingComplete && !skipLoadingScreen ? (
             <AppLoading

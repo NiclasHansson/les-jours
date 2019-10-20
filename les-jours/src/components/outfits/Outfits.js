@@ -49,7 +49,7 @@ export const Outfits = () => {
     const [deleteModal, setDeleteModal] = useState(null);
     const database = React.useContext(DbContext);
     const outfits = database.outfits;
-
+    console.log('OUTFITS', outfits);
     const onDeleteOutfit = () => {
         setDeleteModal(null);
         database.deleteOutfit({ id: deleteModal.outfitId });

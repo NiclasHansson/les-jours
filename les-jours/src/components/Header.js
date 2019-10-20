@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 export const Header = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.headingText}>LES JOURS</Text>
+            <Text style={styles.headingText}>LES STYLES</Text>
         </View>
     );
 };

@@ -21,12 +21,12 @@ const styles = StyleSheet.create({
 
 export const GeneratorEmptyState = ({ outfit }) => {
     return outfit === undefined ? (
+        <Text style={styles.placeholderPrimaryText}>Load an outfit to display it here...</Text>
+    ) : (
         <View>
             <Text style={styles.placeholderPrimaryText}>No rated outfits</Text>
             <Text style={styles.placeholderSecondaryText}>Generate a new outfit to get started.</Text>
         </View>
-    ) : (
-        <Text style={styles.placeholderPrimaryText}>Load an outfit to display it here...</Text>
     );
 };
 

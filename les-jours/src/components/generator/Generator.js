@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { getOutfit } from '../../utils/getOutfit';
 import DbContext from '../../../DbContext';
 
-import Colors from '../../constants/Colors';
 import Outfit from './Outfit';
+import PrimaryButton from '../PrimaryButton';
 import GeneratorEmptyState from './GeneratorEmptyState';
 import RatingPicker from './RatingPicker';
 
@@ -29,15 +29,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     generateButtonContainer: {
-        width: '100%',
         marginBottom: 16,
-    },
-    generateButton: {
         width: '100%',
-        justifyContent: 'center',
-        backgroundColor: Colors.LJ_LJ_1,
-        height: 50,
-        borderRadius: 8,
     },
 });
 
@@ -62,13 +55,10 @@ export const Generator = () => {
                 </View>
             )}
             <View style={styles.generateButtonContainer}>
-                <View style={styles.generateButton}>
-                    <Button
-                        color={Colors.LJ_White}
-                        title={outfit ? 'Try again' : 'What should I wear?'}
-                        onPress={() => setOutfit(getOutfit(0, outfits, clothes))}
-                    />
-                </View>
+                <PrimaryButton
+                    title={'What should I wear?'}
+                    onPress={() => setOutfit(getOutfit(0, outfits, clothes))}
+                />
             </View>
         </View>
     );
